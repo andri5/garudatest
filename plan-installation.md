@@ -897,3 +897,4 @@ docker-compose exec app npm [command]
 
 **Congratulations! Application is ready to use! 🎉**
 
+

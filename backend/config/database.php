@@ -134,6 +134,42 @@ return [
             ]) : []
         ],
 
+        // SQL Server 1 - Tambahkan ini
+        'sqlsrv' => [
+            'driver' => 'sqlsrv',
+            'host' => env('SQLSRV_HOST', 'localhost'),
+            'port' => env('SQLSRV_PORT', '1433'),
+            'database' => env('SQLSRV_DATABASE', 'forge'),
+            'username' => env('SQLSRV_USERNAME', 'forge'),
+            'password' => env('SQLSRV_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'encrypt' => env('DB_ENCRYPT', 'yes'),
+            'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+            'options' => extension_loaded('sqlsrv') ? array_filter([
+                'TrustServerCertificate' => true,
+            ]) : []
+        ],
+
+        // SQL Server 2 - Tambahkan ini
+        'sqlsrv2' => [
+            'driver' => 'sqlsrv',
+            'host' => env('SQLSRV2_HOST', 'localhost'),
+            'port' => env('SQLSRV2_PORT', '1433'),
+            'database' => env('SQLSRV2_DATABASE', 'forge'),
+            'username' => env('SQLSRV2_USERNAME', 'forge'),
+            'password' => env('SQLSRV2_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'encrypt' => env('DB_ENCRYPT', 'yes'),
+            'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+            'options' => extension_loaded('sqlsrv') ? array_filter([
+                'TrustServerCertificate' => true,
+            ]) : []
+        ],
+
     ],
 
     /*
