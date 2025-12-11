@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  # PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+    image: super-app/php
+    container_name: super-app-php
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - super-app-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    # dns:
+    #   - 8.8.8.8
+    #   - 8.8.4.4
+    #   - 1.1.1.1
+    # dns_search:
+    #   - .
+
+  # Nginx Service
+  nginx:
+    image: nginx:alpine
+    container_name: super-app-nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8000:80"
+      # - "443:443"  # Uncomment jika menggunakan SSL
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - super-app-network
+    depends_on:
+      - app
+
+  # MinIO Service (untuk development lokal, di staging gunakan external)
+  minio:
+    image: minio/minio:latest
+    container_name: super-app-minio
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    volumes:
+      - minio-data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - super-app-network
+    profiles:
+      - local  # Hanya jalan di local, tidak di staging
+
+# Docker Networks
+networks:
+  super-app-network:
+    driver: bridge
+
+# Volumes
+volumes:
+  minio-data:
+    driver: local
+
