@@ -47,6 +47,70 @@ services:
     depends_on:
       - app
 
+  # MySQL Database (Lokal untuk Development)
+  mysql:
+    image: mysql:8.0
+    container_name: super-app-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: garudatest_db
+      MYSQL_USER: garuda_user
+      MYSQL_PASSWORD: garuda_password
+    ports:
+      - "3307:3306"  # Port 3307 di host, 3306 di container
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - super-app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # SQL Server 1 (Lokal untuk Development)
+  sqlserver1:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: super-app-sqlserver1
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "YourStrong@Passw0rd"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1434:1433"  # Port 1434 di host, 1433 di container
+    volumes:
+      - sqlserver1-data:/var/opt/mssql
+    networks:
+      - super-app-network
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "YourStrong@Passw0rd" -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # SQL Server 2 (Lokal untuk Development)
+  sqlserver2:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: super-app-sqlserver2
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "YourStrong@Passw0rd2"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1435:1433"  # Port 1435 di host, 1433 di container
+    volumes:
+      - sqlserver2-data:/var/opt/mssql
+    networks:
+      - super-app-network
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "YourStrong@Passw0rd2" -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   # MinIO Service (untuk development lokal, di staging gunakan external)
   minio:
     image: minio/minio:latest
@@ -73,6 +137,12 @@ networks:
 
 # Volumes
 volumes:
+  mysql-data:
+    driver: local
+  sqlserver1-data:
+    driver: local
+  sqlserver2-data:
+    driver: local
   minio-data:
     driver: local
 
