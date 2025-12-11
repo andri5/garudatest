@@ -31,7 +31,16 @@
 
 **Status**: ⏳ **BELUM DILAKUKAN** - Kredensial masih menggunakan placeholder
 
-**Langkah**:
+**📄 Panduan Lengkap**: Lihat `backend/DATABASE-CONFIG-GUIDE.md`
+
+**Metode 1: Menggunakan Script PowerShell (Recommended)**
+```powershell
+cd backend
+.\setup-database.ps1
+```
+Script akan memandu Anda mengisi kredensial secara interaktif dengan password yang disembunyikan.
+
+**Metode 2: Manual Edit**
 1. Edit file `backend/.env` dan `frontend/.env`
 2. Ganti semua placeholder dengan kredensial database yang sebenarnya:
 
