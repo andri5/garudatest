@@ -293,6 +293,9 @@ git push origin master
 | 11. Add API documentation | ✅ Completed | API-DOCUMENTATION.md dibuat |
 | 12. Add installation guides | ✅ Completed | NEXT-STEPS.md dibuat |
 | 13. Update database config | ✅ Completed | sqlsrv dan sqlsrv2 ditambahkan |
+| 14. Rename langkah selanjutnya | ✅ Completed | LANGKAH-SELANJUTNYA.md → db-connection.md |
+| 15. Add web status docs | ✅ Completed | WEB-STATUS.md dibuat |
+| 16. Web application testing | ✅ Completed | Web dan API endpoints ditest |
 
 ---
 
